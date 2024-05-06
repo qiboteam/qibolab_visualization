@@ -143,9 +143,6 @@ def plot_fidelity_history(
     """Plots the fidelity history.
 
     Args:
-        #time_list (list): Specifies the list of times used in simulation.
-        #fid_list_all (list): List of fidelity histories.
-        
         fidelity_history (list): Output of QutipSimulator.fidelity_history
         labels (list): List of labels. Displayed in the plot legend. Defaults to None, in which case the 
         time_in_dt (bool): Specify the units of the x-axis in the plots to be in dt (inverse sampling rate) if True and in ns if False. Defaults to False.
@@ -153,7 +150,6 @@ def plot_fidelity_history(
     Returns:
         Figure: Figure of input fidelity histories with labels.
     """
-    #fidelity_history = self.fidelity_history(sim_index, reference_states)
     time_list, fid_list_all = fidelity_history[0], fidelity_history[1]
     if labels is None:
         labels = fidelity_history[-1]
