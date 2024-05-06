@@ -1,9 +1,12 @@
 from collections import OrderedDict
 
+import numpy as np
 import matplotlib.pyplot as plt
 
 from matplotlib.figure import Figure
 from IPython.display import Latex, display
+
+from qibolab.instruments.emulator.engines.generic import op_from_instruction
 
 def print_hamiltonian(model_config, op_qid_list: list = None):
     """Prints Hamiltonian the model configuration.
@@ -133,7 +136,7 @@ def print_hamiltonian(model_config, op_qid_list: list = None):
 
 
 def plot_fidelity_history(
-    fidelity_history: list
+    fidelity_history: list,
     labels: list = None,
     time_in_dt: bool = False,
 ) -> Figure:
