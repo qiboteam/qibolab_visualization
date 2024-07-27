@@ -140,6 +140,7 @@ def plot_overlaps(
     all_overlaps: dict,
     time_list: Optional[list] = None,
     time_label: Optional[str] = None,
+    figsize: Optional[list] = None,
 ) -> Figure:
     """Plots the overlaps obtained.
 
@@ -147,11 +148,12 @@ def plot_overlaps(
         all_overlaps (dict): Output of QutipSimulator.compute_overlaps.
         time_list (optional, list): List of simulation times (or x-axis parameter). Defaults to None.
         time_label (optional, str): Specifies the x-axis label in the plot. Defaults to None, in which case 'Time / simulation dt' will be used.
+        figsize (optional, list): Width, height of figure in inches; used as optional input to `matplotlib.pyplot.figure` method.
 
     Returns:
         Figure: Figure of input overlap histories with labels.
     """     
-    fig = plt.figure()
+    fig = plt.figure(figsize=figsize)
     for label, overlaps in all_overlaps.items():
         if time_list is None:
             plt.plot(overlaps, label=label)
