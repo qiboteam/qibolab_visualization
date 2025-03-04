@@ -23,7 +23,7 @@ def print_hamiltonian(model_config, op_qid_list: list = None):
             ghz_units = "\\sqrt{{ \\text{GHz} }}"
             return [
                 f"${op_instruction[1]}$",
-                f"${op_instruction[0]/np.sqrt(2*np.pi)}~{ghz_units}$",
+                f"${op_instruction[0]}~{ghz_units}$",
             ]
         else:
             ghz_units = "\\text{GHz}"
@@ -44,6 +44,10 @@ def print_hamiltonian(model_config, op_qid_list: list = None):
         "X": {},
         "Z01": {},
         "sp01": {},
+        "sig01": {},
+        "sig10": {},
+        "sig12": {},
+        "sig21": {},
     }
     for k in op_qid_list:
         latex_op_dict["b"].update({k: f"b_{k}"})
@@ -52,6 +56,11 @@ def print_hamiltonian(model_config, op_qid_list: list = None):
         latex_op_dict["X"].update({k: f"X_{k}"})
         latex_op_dict["Z01"].update({k: rf"\sigma^Z_{k}"})
         latex_op_dict["sp01"].update({k: rf"\sigma^+_{k}"})
+        latex_op_dict["sig01"].update({k: rf"\sigma^+_{k}"})
+        latex_op_dict["sig10"].update({k: rf"\sigma^-_{k}"})
+        latex_op_dict["sig12"].update({k: rf"\Sigma^+_{k}"})
+        latex_op_dict["sig21"].update({k: rf"\Sigma^-_{k}"})
+        
 
     latex_op_connectors_dict = OrderedDict(
         [
@@ -65,6 +74,8 @@ def print_hamiltonian(model_config, op_qid_list: list = None):
     basic_dict = [
         rf"$O_i = b^{{\dagger}}_i b_i$",
         rf"$X_i = b^{{\dagger}}_i + b_i$",
+        rf"$\sigma^+_i = \ket{1}\bra{0}, \quad \sigma^-_i = \ket{0}\bra{1}$",
+        rf"$\Sigma^+_i = \ket{2}\bra{1}, \quad \Sigma^-_i = \ket{1}\bra{2}$",
     ]
     print("Dictionary")
     for i in basic_dict:
@@ -116,6 +127,24 @@ def print_hamiltonian(model_config, op_qid_list: list = None):
             display(Latex(inst[0]))
             display(Latex(inst[1]))
     print("-" * 21)
+
+    try:
+        print("Two-body drive terms:")
+        print("-" * 21)
+        for drive_instructions in model_config["two_body_drive"].values():
+            for op_instruction in drive_instructions:
+                op_instruction = op_from_instruction(
+                    op_instruction,
+                    latex_op_dict,
+                    latex_op_connectors_dict,
+                    multiply_coeff=False,
+                )
+                inst = format_instruction(op_instruction)
+                display(Latex(inst[0]))
+                display(Latex(inst[1]))
+        print("-" * 21)
+    except:
+        pass
 
     print("Dissipative terms:")
     print("-" * 21)
